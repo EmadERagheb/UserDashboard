@@ -1,0 +1,12 @@
+// i:hover{
+//     color: var(--bs-secondary) !important;
+// }
+// a svg:hover{
+//     stroke: var(--bs-secondary) !important;
+
+// }
+.social-icons a:hover i,
+.social-icons a:hover svg path {
+  color: var(--bs-secondary) !important;
+  stroke: var(--bs-secondary) !important;
+}
