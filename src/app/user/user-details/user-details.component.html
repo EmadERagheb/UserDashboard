@@ -1,0 +1,60 @@
+<section id="user-details" class="user-details py-5 ">
+    <div class="container">
+        @if (user) {
+        <div class="row shadow py-3 rounded-3 ">
+            <div class="col-4">
+                <img alt="" style="width:400px;" class="img-circle img-thumbnail  rounded-circle " [src]=" user.avatar">
+            </div>
+            <div class="col-md-6 ">
+                <div class="d-flex justify-content-between">
+                    <strong>Information</strong><br>
+                    <button class="btn btn-outline-primary" (click)="goBack()"> Go Back</button>
+
+                </div>
+                <div class="table-responsive ">
+                    <table class="table table-user-information">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <span class="fa fa-asterisk text-primary"></span>
+                                        Identification
+                                    </strong>
+                                </td>
+                                <td class="text-primary">
+                                    {{user.id}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <span class="fa fa-user  text-primary"></span>
+                                        Full Name
+                                    </strong>
+                                </td>
+                                <td class="text-primary">
+                                    {{user.first_name}} {{user.last_name}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <span class="fa fa-envelope text-primary"></span>
+                                        Email
+                                    </strong>
+                                </td>
+                                <td class="text-primary">
+                                    {{user.email}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        }
+
+    </div>
+</section>

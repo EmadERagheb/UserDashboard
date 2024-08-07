@@ -1,0 +1,27 @@
+<section id="users" class="users py-3">
+    <div class="container">
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 my-3 gy-4 ">
+
+            @for (user of userService.paginatedResult()?.data; track user.id) {
+            <div class="col">
+                <app-user-card [user]="user"></app-user-card>
+            </div>
+            }
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="pagination d-flex justify-content-center">
+                    <pagination [boundaryLinks]="true" [itemsPerPage]="userService.paginatedResult()?.per_page!"
+                        [totalItems]="userService.paginatedResult()?.total!" (pageChanged)="pageChanged($event)"
+                        [maxSize]="10"  previousText="&lsaquo;"
+                        nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+                    </pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+<!-- [ngModel]="userService.paginatedResult()?.page" -->
