@@ -12,7 +12,12 @@ export class UserService {
   private usersEndPoint = environment.APIURL + '/users';
   private http = inject(HttpClient);
   paginatedResult = signal<PaginatedResult<User[]> | null>(null);
+  cashedResult = new Map<string, PaginatedResult<User[]>>();
   getAllUsers(userParams: UserParams) {
+    if (this.cashedResult.has(Object.values(userParams).join('-')))
+      return this.paginatedResult.set(
+        this.cashedResult.get(Object.values(userParams).join('-'))!
+      );
     let params = new HttpParams();
     params = params.append('page', userParams.page);
     params = params.append('per_page', userParams.per_page);
@@ -21,7 +26,7 @@ export class UserService {
       .subscribe({
         next: (data) => {
           this.paginatedResult.set(data);
-          console.log(this.paginatedResult());
+          this.cashedResult.set(Object.values(userParams).join('-'), data);
         },
       });
   }
