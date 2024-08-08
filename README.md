@@ -1,4 +1,4 @@
-# User Dashboard - 
+# User Dashboard 
 
 ## Overview
 
