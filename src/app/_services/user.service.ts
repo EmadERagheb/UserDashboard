@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { User } from '../_models/user';
 import { UserParams } from '../_models/user-params';
 import { PaginatedResult } from '../_models/pagination';
+import { map, of, shareReplay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,15 @@ export class UserService {
       });
   }
   getUser(id: string) {
-    return this.http.get<{ data: User }>(this.usersEndPoint + `/${id}`);
+    const user: User | undefined = [...this.cashedResult.values()]
+      .reduce((acc: User[], response) => {
+        return response.data ? acc.concat(response.data) : acc;
+      }, [])
+      .find((u: User) => u.id == +id);
+    if (user) return of(user);
+    return this.http.get<{ data: User }>(this.usersEndPoint + `/${id}`).pipe(
+      map((data) => data.data),
+      shareReplay()
+    );
   }
 }

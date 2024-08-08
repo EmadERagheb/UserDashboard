@@ -13,17 +13,16 @@ import { JsonPipe } from '@angular/common';
 })
 export class UserDetailsComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
-  userService = inject(UserService);
+
   user?: User;
   ngOnInit(): void {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (id) this.loadUser(id);
-  }
-  loadUser(id: string) {
-    this.userService.getUser(id).subscribe({
-      next: (data) => (this.user = data.data),
+    this.activatedRoute.data.subscribe({
+      next: (data) => {
+        this.user = data['user'];
+      },
     });
   }
+
   goBack() {
     history.back();
   }
