@@ -101,6 +101,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 If you have any questions or suggestions, feel free to reach out to me:
 
-- Email: [emaderagheb@gmail.com](mailto:emaderagheb@gmail.com))
+- Email: [emaderagheb@gmail.com](mailto:emaderagheb@gmail.com)
 - GitHub: [https://github.com/EmadERagheb](https://github.com/EmadERagheb)
 
