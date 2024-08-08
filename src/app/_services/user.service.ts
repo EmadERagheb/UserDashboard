@@ -12,34 +12,43 @@ import { map, of, shareReplay } from 'rxjs';
 export class UserService {
   private usersEndPoint = environment.APIURL + '/users';
   private http = inject(HttpClient);
+  private cashedResult = new Map<string, PaginatedResult<User[]>>();
+  private cashedSearchedUsers: User[] = [];
   paginatedResult = signal<PaginatedResult<User[]> | null>(null);
-  cashedResult = new Map<string, PaginatedResult<User[]>>();
-  getAllUsers(userParams: UserParams) {
-    if (this.cashedResult.has(Object.values(userParams).join('-')))
+  userParams = signal<UserParams>(new UserParams());
+  getAllUsers() {
+    
+    if (this.cashedResult.has(Object.values(this.userParams()).join('-')))
       return this.paginatedResult.set(
-        this.cashedResult.get(Object.values(userParams).join('-'))!
+        this.cashedResult.get(Object.values(this.userParams()).join('-'))!
       );
     let params = new HttpParams();
-    params = params.append('page', userParams.page);
-    params = params.append('per_page', userParams.per_page);
+    params = params.append('page', this.userParams().page);
+    params = params.append('per_page', this.userParams().per_page);
     return this.http
       .get<PaginatedResult<User[]>>(this.usersEndPoint, { params })
       .subscribe({
         next: (data) => {
           this.paginatedResult.set(data);
-          this.cashedResult.set(Object.values(userParams).join('-'), data);
+          this.cashedResult.set(Object.values(this.userParams()).join('-'), data);
         },
       });
   }
   getUser(id: string) {
-    const user: User | undefined = [...this.cashedResult.values()]
+    let user: User | undefined = [...this.cashedResult.values()]
       .reduce((acc: User[], response) => {
         return response.data ? acc.concat(response.data) : acc;
       }, [])
       .find((u: User) => u.id == +id);
     if (user) return of(user);
+    user = this.cashedSearchedUsers.find((x) => x.id == +id);
+    if (user) return of(user);
+
     return this.http.get<{ data: User }>(this.usersEndPoint + `/${id}`).pipe(
-      map((data) => data.data),
+      map((data) => {
+        this.cashedSearchedUsers.push(data.data);
+        return data.data;
+      }),
       shareReplay()
     );
   }

@@ -4,20 +4,19 @@
             <div class="col d-flex flex-row justify-content-between">
                 <div class="header-container align-content-center">
                     <app-pagination-header [totalItems]="userService.paginatedResult()?.total??0"
-                    [pageIndex]="userService.paginatedResult()?.page??0"
-                    [pageSize]="userService.paginatedResult()?.per_page??0">
-                </app-pagination-header>
+                        [pageIndex]="userService.paginatedResult()?.page??0"
+                        [pageSize]="userService.paginatedResult()?.per_page??0">
+                    </app-pagination-header>
                 </div>
                 <div class="form-contaienr">
-                    <form  [formGroup]="searchForm"></form>
+                    <form [formGroup]="searchForm"></form>
                     <div class="mb-3 form-floating">
                         <input type="number" class="form-control" name="userId" id="userId" placeholder="Search By Id"
-                     [formControl]="searchForm.controls['userId']"
-                      (input)="onSearch()">
-                        <label >Search By Id</label>
+                            [formControl]="searchForm.controls['userId']">
+                        <label>Search By Id</label>
                     </div>
                 </div>
-              
+
             </div>
         </div>
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4  gy-3 ">
@@ -34,7 +33,9 @@
                 <div class="pagination d-flex justify-content-center">
                     <pagination [boundaryLinks]="true" [itemsPerPage]="userService.paginatedResult()?.per_page!"
                         [totalItems]="userService.paginatedResult()?.total!" (pageChanged)="pageChanged($event)"
-                        [maxSize]="10" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+                        [maxSize]="10" 
+                        [ngModel]="userService.paginatedResult()?.page"
+                        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
                         lastText="&raquo;">
                     </pagination>
                 </div>
@@ -43,4 +44,3 @@
         }
     </div>
 </section>
-<!-- [ngModel]="userService.paginatedResult()?.page" -->

@@ -34,6 +34,8 @@
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
               "node_modules/ngx-spinner/animations/ball-spin.css",
+              "node_modules/ngx-toastr/toastr.css",
+
               "src/modifiedBootstrap.scss",
               "src/styles.scss"
             ],

@@ -12,7 +12,7 @@ import {
 } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { PaginationHeaderComponent } from '../../pagination-header/pagination-header.component';
-import { debounceTime, map, switchMap, take } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, switchMap, take } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -32,34 +32,30 @@ import { Router } from '@angular/router';
 })
 export class UsersComponent implements OnInit {
   private fb = inject(FormBuilder);
+  private router = inject(Router);
+  userService = inject(UserService);
   searchForm = this.fb.group({ userId: [] });
-  firstRun = true;
 
-  router = inject(Router);
+ 
+
   pageChanged(event: PageChangedEvent) {
-    if (this.userParams.page !== event.page) {
-      this.userParams.page = event.page;
+    if (this.userService.userParams().page !== event.page) {
+      this.userService.userParams().page = event.page;
       this.loadUsers();
     }
   }
-  userService = inject(UserService);
-  users: User[] = [];
-  userParams = new UserParams();
 
   ngOnInit(): void {
     this.loadUsers();
     this.navigateToUserDetail();
   }
   loadUsers() {
-    this.userService.getAllUsers(this.userParams);
+    this.userService.getAllUsers();
   }
 
-  onSearch() {
-    this.navigateToUserDetail();
-  }
   navigateToUserDetail() {
     this.searchForm.controls['userId'].valueChanges
-      .pipe(debounceTime(1000), take(1))
+      .pipe(debounceTime(1000), distinctUntilChanged())
       .subscribe({
         next: () => {
           if (this.searchForm.controls['userId'].value) {
